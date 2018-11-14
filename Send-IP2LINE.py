@@ -3,35 +3,55 @@ import requests
 
 
 def get_ip_address():
-    # グローバルIPアドレスを取得
+    """
+    get your global IP address(IPv4)
+
+    Parameters
+    ----------
+
+    Returns
+    ----------
+    get_ip:string
+        string of IP address
+    """
     get_ip = urllib.request.urlopen('http://ipcheck.ieserver.net').read().decode('utf-8')
     return(get_ip)
 
 
 def post_line(send_message):
-    # LINE_notifyへ送る準備
-    line_notify_token = 'LINEから入手したアクセストークン'
+    """
+    send message to LINE_notify
+
+    Parameters
+    ----------
+    send_message:string
+        string to send to LINE_notify
+
+    Returns
+    ---------
+    """
+    line_notify_token = 'Your access token'
     line_notify_api = 'https://notify-api.line.me/api/notify'
     message = 'IP:'+send_message
     payload = {'message': message}
 
-    # 発行したトークン
+    #create headers
     headers = {'Authorization': 'Bearer ' + line_notify_token}
 
-    # LINE_notifyへメッセージを送信
+    #send message
     line_notify = requests.post(line_notify_api, data=payload, headers=headers)
 
 
 def main():
-    # IPアドレスを取得
-    # IPアドレスの余計な改行を削除    
+    # get a string of your Ip address
+    # and delete <LF> code from this string
     ip=get_ip_address().rstrip()
 
-    # IPアドレスをLINEへ送信
+    #send IP address to LINE_notify
     post_line(ip)
 
-    # 送信IPアドレスを確認
-    print('今のIPアドレス：{}です。'.format(ip))
+    #display IP address on the screen
+    print('Your IP address：{}'.format(ip))
 
 
 
